@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-15T13:00:00Z",
+  "title": "Design System: WikiHunt — The Departure Board",
+  "extensions": {
+    "colorMeta": {
+      "amber-glow": { "role": "primary", "displayName": "Amber Glow", "canonical": "#ffb020", "tonalRamp": ["#3d2600", "#664000", "#996100", "#cc8100", "#ffb020", "#ffc659", "#ffdb96", "#ffefd1"] },
+      "amber-strong": { "role": "primary", "displayName": "Amber Strong", "canonical": "#d98c00" },
+      "amber-ink": { "role": "primary", "displayName": "Amber Ink", "canonical": "#1a1200" },
+      "status-enroute": { "role": "tertiary", "displayName": "En Route", "canonical": "#4f8fd1", "tonalRamp": ["#0b2036", "#153a5e", "#1f5486", "#3872ac", "#4f8fd1", "#7dabdf", "#abc8ea", "#d8e5f5"] },
+      "status-departed": { "role": "tertiary", "displayName": "Departed", "canonical": "#4ade80", "tonalRamp": ["#0e3a1d", "#1a6432", "#278f47", "#38ba63", "#4ade80", "#7beaa4", "#aef3c9", "#e0faea"] },
+      "status-delayed": { "role": "tertiary", "displayName": "Delayed", "canonical": "#f35f5f", "tonalRamp": ["#4a1010", "#7a1a1a", "#a92727", "#d94040", "#f35f5f", "#f68a8a", "#fab5b5", "#fde0e0"] },
+      "status-delayed-bright": { "role": "tertiary", "displayName": "Delayed Bright", "canonical": "#f87171" },
+      "board-black": { "role": "neutral", "displayName": "Board Black", "canonical": "#0a0a0c" },
+      "gunmetal": { "role": "neutral", "displayName": "Gunmetal", "canonical": "#18181c" },
+      "gunmetal-raised": { "role": "neutral", "displayName": "Gunmetal Raised", "canonical": "#212126" },
+      "split-seam": { "role": "neutral", "displayName": "Split Seam", "canonical": "#303036" },
+      "flap-cream": { "role": "neutral", "displayName": "Flap Cream", "canonical": "#eae6da" },
+      "panel-steel": { "role": "neutral", "displayName": "Panel Steel", "canonical": "#a3a5ac" },
+      "faint-steel": { "role": "neutral", "displayName": "Faint Steel", "canonical": "#8d8f98" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Uppercase headings, origin/target titles, section labels." },
+      "flap": { "displayName": "Flap", "purpose": "Exclusively inside .flap-cell: the timer and the room code. Never running text." },
+      "body": { "displayName": "Body", "purpose": "Paragraph copy, form fields, table cells." },
+      "label": { "displayName": "Label", "purpose": "Uppercase small caps for stat labels, badges, field labels. 11px floor." }
+    },
+    "shadows": [
+      { "name": "panel-lip", "value": "0 1px 0 rgba(0,0,0,.9), 0 3px 0 rgba(0,0,0,.5), 0 3px 8px rgba(0,0,0,.35)", "purpose": "Cards, sidebar, article pane, toasts — a physical bezel's lip." },
+      { "name": "recessed-cell", "value": "inset 0 2px 4px rgba(0,0,0,.6)", "purpose": "Inputs, flap cells, code chips — a character sunk into the board." }
+    ],
+    "motion": [
+      { "name": "flap-flip", "value": "scaleY transform, 90ms + 100ms swap", "purpose": "A flap cell's character-change flip: compress toward zero, swap the character at the midpoint, release." },
+      { "name": "ease-timer", "value": "0.25s linear", "purpose": "Timer-bar transform:scaleX transition; background swaps to the delayed/urgent color over 0.3s ease." }
+    ],
+    "breakpoints": [
+      { "name": "sidebar-collapse", "value": "900px" },
+      { "name": "grid-collapse", "value": "800px" },
+      { "name": "article-tighten", "value": "700px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Flap Display",
+      "kind": "custom",
+      "refersTo": "flap-cell",
+      "description": "The signature component: any glance-read number (timer, room code) renders as a row of physical flap cells with a visible seam, flipping only the characters that change.",
+      "html": "<div class=\"flap-row\"><span class=\"flap-cell\">1</span><span class=\"flap-cell\">2</span><span class=\"flap-cell urgent\">0</span></div>",
+      "css": ".flap-row { display: inline-flex; gap: 3px; } .flap-cell { position: relative; display: inline-flex; align-items: center; justify-content: center; min-width: 0.85em; background: #0a0a0c; border: 1px solid #303036; border-radius: 2px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.6); font-family: 'Big Shoulders Stencil Display', monospace; font-weight: 700; font-size: 22px; padding: 4px 6px; color: #eae6da; overflow: hidden; transition: transform 0.09s ease-in; } .flap-cell::after { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: rgba(0,0,0,0.7); } .flap-cell.urgent { color: #f35f5f; } .flap-cell.flipping { transform: scaleY(0.05); }"
+    },
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The single primary call to action.",
+      "html": "<button class=\"ds-btn ds-btn-primary\">Criar sala</button>",
+      "css": ".ds-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; padding: 12px 20px; border-radius: 2px; border: 1px solid transparent; cursor: pointer; transition: transform 0.08s ease, background 0.12s ease; } .ds-btn:active { transform: translateY(1px); } .ds-btn-primary { background: #ffb020; color: #1a1200; } .ds-btn-primary:hover { background: #ffc04d; }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Recessed board-black cell, standard across every form.",
+      "html": "<input class=\"ds-input\" placeholder=\"ex: 7K2P9Q\" />",
+      "css": ".ds-input { background: #0a0a0c; border: 1px solid #303036; color: #eae6da; padding: 11px 14px; border-radius: 2px; font-size: 15px; font-family: 'Archivo', sans-serif; box-shadow: inset 0 2px 4px rgba(0,0,0,0.6); outline: none; } .ds-input:focus { border-color: #d98c00; box-shadow: inset 0 2px 4px rgba(0,0,0,0.6), 0 0 0 3px rgba(255,176,32,0.2); } .ds-input::placeholder { color: #8d8f98; }"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Flat gunmetal panel with a hard panel-lip shadow, no gradient, no border-radius softness beyond 6px.",
+      "html": "<div class=\"ds-card\"><h3>Como funciona</h3><p>Conteúdo do card.</p></div>",
+      "css": ".ds-card { background: #18181c; border: 1px solid #303036; border-radius: 6px; box-shadow: 0 1px 0 rgba(0,0,0,.9), 0 3px 0 rgba(0,0,0,.5), 0 3px 8px rgba(0,0,0,.35); padding: 28px; color: #eae6da; }"
+    },
+    {
+      "name": "Difficulty Badge",
+      "kind": "chip",
+      "refersTo": "badge-medium",
+      "description": "Board-black tag with a colored left flag border standing in for a physical status flag — no pill, no tinted fill.",
+      "html": "<span class=\"ds-badge ds-badge-medium\">Médio</span>",
+      "css": ".ds-badge { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px 3px 8px; border-radius: 2px; border-left: 3px solid currentColor; background: #0a0a0c; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; } .ds-badge-medium { color: #ffb020; }"
+    },
+    {
+      "name": "Player Chip",
+      "kind": "chip",
+      "refersTo": "player-chip",
+      "description": "A player's live status: a square LED plus an uppercase status word, reused in host view, sidebar, and roster.",
+      "html": "<span class=\"ds-chip\"><span class=\"ds-led ds-led-near\"></span>Ana<span class=\"ds-status\">Embarque</span></span>",
+      "css": ".ds-chip { padding: 7px 12px; border-radius: 2px; background: #212126; border: 1px solid #303036; font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; color: #eae6da; font-family: 'Archivo', sans-serif; } .ds-led { width: 7px; height: 7px; border-radius: 1px; display: inline-block; } .ds-led-near { background: #ffb020; box-shadow: 0 0 6px rgba(255,176,32,0.7); } .ds-status { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #ffb020; }"
+    },
+    {
+      "name": "Breadcrumb Stub",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "A visited article as a clickable ticket-stub-styled button; the current position is the non-interactive amber-highlighted stub at the end.",
+      "html": "<div class=\"ds-breadcrumb\"><button class=\"ds-crumb ds-crumb-link\">Cachorro</button><span class=\"ds-sep\">›</span><span class=\"ds-crumb ds-crumb-current\">Gato</span></div>",
+      "css": ".ds-breadcrumb { display: flex; gap: 6px; align-items: center; font-size: 12.5px; color: #8d8f98; } .ds-crumb { padding: 3px 10px; border-radius: 2px; background: #18181c; border: 1px solid #303036; border-bottom: 2px dashed #303036; font: inherit; color: inherit; } .ds-crumb-link { cursor: pointer; } .ds-crumb-link:hover { background: #212126; border-color: #d98c00; color: #eae6da; } .ds-crumb-current { color: #ffb020; border-color: #d98c00; border-bottom-style: solid; } .ds-sep { opacity: 0.5; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Departure Board",
+    "overview": "WikiHunt reads as a mechanical split-flap board at a terminal gate — the kind that once hung in every airport and train station, its characters flipping into place with an audible click. The product's own mechanism (racing from a shared origin article to a shared target through nothing but real links) maps directly onto that world's own grammar: a board that always shows FROM and TO, a clock that counts down in physical digits, and a status column that reads DEPARTED / EN ROUTE / BOARDING instead of drawing on the visitor's imagination.\n\nThis direction was assigned by a dice roll against six catalog challengers, fused and weighed on audience identification and product clarity. None beat it outright; two — an oscilloscope's live-signal legibility and a guide-map's warm sense of journey — were strong enough to raise it. The physical scene forced the palette: someone glances at this from across a couch at a game night, the way you'd glance up at an actual departure board — so it reads dark not because dark is a template default, but because terminal boards are dark, lit from within.",
+    "keyCharacteristics": [
+      "Board black and gunmetal neutrals with exactly one accent — amber.",
+      "Numbers a player must read under pressure render as physical flap cells with a real flip transition, not plain digits.",
+      "Corners are almost square — no soft, pill-shaped chrome anywhere.",
+      "Depth comes from a recessed-cell inset shadow and a hard-edged panel lip, never a soft ambient glow.",
+      "Status is read as a word backed by a small square LED, not inferred from a colored dot alone.",
+      "The Wikipedia article pane stays its authentic light-mode self at rest — the one deliberate exception to the board's otherwise all-dark world."
+    ],
+    "rules": [
+      { "name": "The One Glow Rule", "body": "Amber is the system's only accent color. It never shares a component with a second saturated hue; the status vocabulary (blue/green/red) is locked to player/room state and never used decoratively.", "section": "colors" },
+      { "name": "The Flap-for-Numbers Rule", "body": "Any number a player must read under time pressure — the timer, a room code, a score — renders through the Flap Display component, not as plain text.", "section": "typography" },
+      { "name": "The Recessed-or-Lipped Rule", "body": "A surface is either a raised panel (Panel Lip shadow) or a recessed cell (Recessed Cell shadow) — never a soft ambient glow, and never both on the same element.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do render any glance-read number through the Flap Display component — never as plain display-face text.",
+      "Do keep Amber Glow as the system's only accent; the status vocabulary is locked to player/room state, never decorative.",
+      "Do give status its own word (A CAMINHO / EMBARQUE / PARTIU), not just a colored LED.",
+      "Do keep every surface either a raised panel or a recessed cell, never a soft ambient glow.",
+      "Do keep the article reading pane in its authentic light-mode Wikipedia styling at rest."
+    ],
+    "donts": [
+      "Don't round a corner past 6px — this board has no pill-shaped chrome anywhere.",
+      "Don't introduce a text color below 4.5:1 contrast against any of the three neutral surfaces.",
+      "Don't set functional UI text below 11px — the label floor.",
+      "Don't reach for a soft ambient drop shadow; depth comes from the Panel Lip or Recessed Cell treatments only.",
+      "Don't restyle the article pane toward a casual mobile-app look."
+    ]
+  }
+}

@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>WikiHunt — Admin</title>
+<link rel="stylesheet" href="/css/base.css" />
+<style>
+  .login-wrap { max-width: 380px; margin: 90px auto; }
+  .tabs { display: flex; gap: 6px; margin-bottom: 22px; flex-wrap: wrap; }
+  .tab-btn {
+    padding: 9px 16px; border-radius: var(--radius-sm); border: 1px solid var(--border);
+    background: var(--bg-elev-1); color: var(--text-dim); font-weight: 700; font-size: 12.5px;
+    text-transform: uppercase; letter-spacing: 0.04em;
+    cursor: pointer;
+  }
+  .tab-btn.active { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+  .row-actions { display: flex; gap: 8px; }
+  .section-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; flex-wrap: wrap; gap: 10px; }
+  .inline-form { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; margin-bottom: 20px; }
+  .inline-form .field { margin-bottom: 0; min-width: 160px; }
+  .codes-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .empty-note { color: var(--text-faint); font-size: 14px; padding: 20px 0; text-align: center; }
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <a href="/" class="logo"><span class="mark">W</span> WikiHunt Admin</a>
+    <div id="topbarRight"></div>
+  </div>
+
+  <div class="wrap">
+    <div id="loginScreen" class="login-wrap card card-pad">
+      <h2 style="margin-top:0">Login administrativo</h2>
+      <div id="loginError" class="error-box" role="alert"></div>
+      <div class="field">
+        <label for="loginUser">Usuário</label>
+        <input id="loginUser" class="input" placeholder="admin" autocomplete="username" />
+      </div>
+      <div class="field">
+        <label for="loginPass">Senha</label>
+        <input id="loginPass" class="input" type="password" placeholder="••••••••" autocomplete="current-password" />
+      </div>
+      <button id="loginBtn" class="btn btn-primary btn-block">Entrar</button>
+    </div>
+
+    <div id="dashboard" style="display:none">
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="codes">Códigos de sala</button>
+        <button class="tab-btn" data-tab="pairs">Pares de palavras</button>
+        <button class="tab-btn" data-tab="rooms">Salas ativas</button>
+        <button class="tab-btn" data-tab="admins">Administradores</button>
+      </div>
+
+      <div class="tab-panel active" id="tab-codes">
+        <div class="card card-pad">
+          <div class="section-head">
+            <h3 style="margin:0">Códigos de sala</h3>
+          </div>
+          <p class="muted" style="margin-top:-8px">Cada código libera a criação de <strong>uma</strong> sala. O host informa o código para configurar e abrir a sala; os participantes usam o mesmo código para entrar.</p>
+          <div class="inline-form">
+            <div class="field">
+              <label for="codeCount">Quantidade</label>
+              <input id="codeCount" class="input" type="number" min="1" max="50" value="1" style="width:100px" />
+            </div>
+            <div class="field">
+              <label for="codeLabel">Rótulo (opcional)</label>
+              <input id="codeLabel" class="input" placeholder="ex: turma da tarde" />
+            </div>
+            <button id="genCodesBtn" class="btn btn-primary">Gerar código(s)</button>
+          </div>
+          <div id="codesError" class="error-box" role="alert"></div>
+          <div id="codesTableWrap"></div>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="tab-pairs">
+        <div class="card card-pad">
+          <h3 style="margin-top:0">Pares de palavras</h3>
+          <p class="muted" style="margin-top:-8px">Defina o artigo de partida e o artigo-alvo de cada par. A proximidade entre eles é você quem decide ao classificar a dificuldade.</p>
+          <div id="pairsError" class="error-box" role="alert"></div>
+          <div class="inline-form">
+            <div class="field">
+              <label for="pairStart">Artigo inicial</label>
+              <input id="pairStart" class="input" placeholder="ex: Guitarra" style="width:200px" />
+            </div>
+            <div class="field">
+              <label for="pairTarget">Artigo alvo</label>
+              <input id="pairTarget" class="input" placeholder="ex: Japão" style="width:200px" />
+            </div>
+            <div class="field">
+              <label for="pairDifficulty">Dificuldade</label>
+              <select id="pairDifficulty" class="input">
+                <option value="easy">Fácil</option>
+                <option value="medium">Médio</option>
+                <option value="hard">Difícil</option>
+              </select>
+            </div>
+            <button id="addPairBtn" class="btn btn-primary">Adicionar par</button>
+          </div>
+          <div id="pairsTableWrap"></div>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="tab-rooms">
+        <div class="card card-pad">
+          <div class="section-head">
+            <h3 style="margin:0">Salas ativas agora</h3>
+            <button id="refreshRoomsBtn" class="btn btn-ghost btn-sm">Atualizar</button>
+          </div>
+          <div id="roomsTableWrap"></div>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="tab-admins">
+        <div class="card card-pad">
+          <h3 style="margin-top:0">Administradores</h3>
+          <div id="adminsError" class="error-box" role="alert"></div>
+          <div class="inline-form">
+            <div class="field">
+              <label for="newAdminUser">Usuário</label>
+              <input id="newAdminUser" class="input" placeholder="novo.admin" />
+            </div>
+            <div class="field">
+              <label for="newAdminPass">Senha</label>
+              <input id="newAdminPass" class="input" type="password" placeholder="mín. 6 caracteres" />
+            </div>
+            <button id="addAdminBtn" class="btn btn-primary">Adicionar admin</button>
+          </div>
+          <div id="adminsTableWrap"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/admin.js"></script>
+</body>
+</html>

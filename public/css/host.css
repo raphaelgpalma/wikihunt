@@ -1,0 +1,22 @@
+/* Host-only rules. room.css (also loaded on host.html) already covers every
+   shared game-screen/result/final element — player-list, player-chip,
+   leaderboard-row, timer bar, and so on — so none of that is repeated here. */
+
+.diff-select { display: flex; gap: 8px; }
+.diff-opt {
+  flex: 1; padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border);
+  background: var(--bg); color: var(--text-dim); font-weight: 700; cursor: pointer; font-family: var(--font-ui);
+  text-transform: uppercase; font-size: 13px; letter-spacing: 0.04em;
+  box-shadow: var(--shadow-cell);
+}
+.diff-opt[data-diff="easy"].active { background: rgba(74,222,128,0.15); border-color: var(--easy); color: var(--easy); }
+.diff-opt[data-diff="medium"].active { background: rgba(255,176,32,0.15); border-color: var(--medium); color: var(--medium); }
+.diff-opt[data-diff="hard"].active { background: rgba(243,95,95,0.15); border-color: var(--hard); color: var(--hard); }
+.diff-opt-chaos { border-style: dashed; }
+.diff-opt[data-diff="chaos"].active { background: rgba(255,176,32,0.1); border-color: var(--accent); border-style: dashed; color: var(--accent); }
+.lang-opt.active { background: rgba(255,176,32,0.15); border-color: var(--accent-strong); color: var(--accent); }
+
+.big-code {
+  margin: 10px 0;
+}
+.big-code .flap-cell { font-size: 40px; padding: 6px 10px; min-width: 34px; }

@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>WikiHunt — Sala</title>
+<link rel="stylesheet" href="/css/base.css" />
+<link rel="stylesheet" href="/css/room.css" />
+</head>
+<body>
+  <div class="topbar">
+    <a href="/" class="logo"><span class="mark">W</span> WikiHunt</a>
+    <span class="muted" id="topbarInfo"></span>
+  </div>
+
+  <div id="hostBanner" class="host-banner" style="display:none" role="status"></div>
+
+  <!-- JOIN -->
+  <div class="wrap">
+    <section id="joinScreen" class="card card-pad" style="max-width:420px;margin:60px auto">
+      <h2 style="margin-top:0">Entrar na sala</h2>
+      <div id="joinError" class="error-box" role="alert"></div>
+      <div class="field">
+        <label for="joinCode">Código da sala</label>
+        <input id="joinCode" class="input" placeholder="ex: 7K2P9Q" style="text-transform:uppercase" maxlength="10" />
+      </div>
+      <div class="field">
+        <label for="joinName">Seu apelido</label>
+        <input id="joinName" class="input" placeholder="ex: Ana" maxlength="20" />
+      </div>
+      <button id="joinBtn" class="btn btn-primary btn-block">Entrar</button>
+    </section>
+
+    <!-- LOBBY -->
+    <section id="lobbyScreen" class="card card-pad" style="max-width:520px;margin:60px auto;display:none">
+      <div class="center">
+        <div class="spinner" style="margin:0 auto 16px"></div>
+        <h3>Sala <span id="lobbyCode" style="color:var(--accent)"></span></h3>
+        <p class="muted">Aguardando o host iniciar a partida...</p>
+      </div>
+      <div style="margin-top:20px">
+        <h4 class="muted" style="margin-bottom:10px">Participantes</h4>
+        <div id="playerList" class="player-list"></div>
+      </div>
+    </section>
+
+    <!-- ROUND RESULT -->
+    <section id="resultScreen" class="card card-pad" style="max-width:560px;margin:60px auto;display:none">
+      <h3 class="center" style="margin-top:0" id="resultTitle">Resultado da rodada</h3>
+      <div id="resultList" style="margin-bottom:18px"></div>
+      <h4 class="muted">Placar geral</h4>
+      <div id="resultLeaderboard"></div>
+      <div class="shortest-path-block">
+        <div class="target-label">CAMINHO MAIS CURTO</div>
+        <div id="shortestPathBox" class="shortest-path"></div>
+      </div>
+      <p class="center muted" id="nextRoundNote" style="margin-top:16px"></p>
+    </section>
+
+    <!-- FINAL -->
+    <section id="finalScreen" class="card card-pad" style="max-width:520px;margin:60px auto;display:none">
+      <h2 class="center" style="margin-top:0">Fim de jogo</h2>
+      <div id="finalLeaderboard"></div>
+      <p class="hint center" style="margin-top:14px">Fique nessa aba — se o host começar uma nova rodada nesta sala, você entra automaticamente.</p>
+      <a href="/" class="btn btn-primary btn-block" style="margin-top:10px">Voltar ao início</a>
+    </section>
+  </div>
+
+  <!-- GAME -->
+  <section id="gameScreen" style="display:none">
+    <div class="game-header">
+      <div class="game-header-inner">
+        <div class="path-mini">
+          <div class="path-mini-node">
+            <div class="target-label">ORIGEM</div>
+            <div class="path-mini-title" id="startTitleDisplay">—</div>
+          </div>
+          <div class="path-mini-arrow">→</div>
+          <div class="path-mini-node">
+            <div class="target-label">ALVO</div>
+            <div class="target-title" id="targetTitle">—</div>
+          </div>
+        </div>
+        <div class="game-stats">
+          <div class="stat"><div class="stat-label">Tempo</div><div class="stat-value flap-row" id="timerText">--</div></div>
+          <div class="stat"><div class="stat-label">Cliques</div><div class="stat-value" id="clickCount">0</div></div>
+          <div class="stat"><div class="stat-label">Rodada</div><div class="stat-value" id="roundLabel">-/-</div></div>
+        </div>
+        <button type="button" id="darkModeToggle" class="dark-mode-toggle" aria-pressed="false" aria-label="Alternar modo noturno do artigo" title="Modo noturno do artigo">NOITE</button>
+      </div>
+      <div class="timer-bar-track"><div class="timer-bar-fill" id="timerBar"></div></div>
+    </div>
+
+    <div id="toastArea" class="toast-area" aria-live="polite" aria-atomic="false"></div>
+
+    <div class="game-body">
+      <aside class="game-sidebar">
+        <h3>Jogadores</h3>
+        <div id="sidebarPlayerList" class="player-list-vertical"></div>
+        <div class="sidebar-legend">
+          <div><span class="led led-far"></span> A caminho</div>
+          <div><span class="led led-near"></span> Embarque</div>
+          <div><span class="led led-done"></span> Partiu</div>
+        </div>
+      </aside>
+
+      <div class="game-main">
+        <div class="breadcrumb" id="breadcrumb"></div>
+
+        <div class="article-shell">
+          <div id="articleLoading" class="article-loading"><div class="spinner"></div></div>
+          <div id="articleContent" class="mw-parser-output article-content"></div>
+          <div id="finishedOverlay" class="finished-overlay" style="display:none">
+            <div class="finished-card">
+              <div class="finished-flag">PARTIU</div>
+              <h3>Você chegou!</h3>
+              <p class="muted" id="finishedStats"></p>
+              <p class="faint">Aguardando o fim da rodada...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <link rel="stylesheet" id="wikiSiteStyles" href="https://pt.wikipedia.org/w/load.php?lang=pt&modules=site.styles&only=styles&skin=vector-2022" />
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="module" src="/js/room.js"></script>
+</body>
+</html>
